@@ -169,4 +169,12 @@ class ItemGroup implements Robbo\Presenter\PresentableInterface
             $this->repo->raw("itemgroup.harvestfrom.$this->id")
         );
     }
+
+    public function getDropFromMap()
+    {
+        return implode("，", array_map(function ($id) {
+            return $id;
+            return $this->repo->getModel("Mapgen", $id)->name;
+        }, $this->repo->raw("itemgroup.dropfrommap.{$this->data->id}")));
+    }
 }

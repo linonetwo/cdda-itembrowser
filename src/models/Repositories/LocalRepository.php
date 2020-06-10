@@ -297,9 +297,19 @@ class LocalRepository extends Repository implements RepositoryInterface, Reposit
         if (!isset($object->type)) {
             return;
         }
-        if ($object->type == "snippet" || $object->type == "talk_topic" || $object->type == "overmap_terrain" || $object->type == "scenario" || $object->type == "ammunition_type" ||
+        // ID 是 array 的情况，比如 necropolis_a_4（这就很离谱……,
+        if (isset($object->id) && is_array($object->id)) {
+            $nobj = deep_copy($object);
+            foreach ($object->id as $id) {
+                $nobj->id = $id;
+                $this->newObject($nobj);
+            }
+            return;
+        }
+
+        if ($object->type == "snippet" || $object->type == "talk_topic" || $object->type == "scenario" || $object->type == "ammunition_type" ||
         $object->type == "start_location" || $object->type == "MIGRATION" || $object->type == "item_action" || $object->type == "ITEM_CATEGORY" ||
-        $object->type == "mapgen" || $object->type == "speech" || $object->type == "keybinding" ) {
+        $object->type == "speech" || $object->type == "keybinding" ) {
             return;
         }
 
@@ -406,7 +416,7 @@ class LocalRepository extends Repository implements RepositoryInterface, Reposit
         // \Log::info($display_object_id);
 
         // handle template copying in cataclysm JSON
-        if (array_key_exists("copy-from", $object)) {
+        if (array_key_exists("copy-from", $object)) { # && ($object->id ?? '´_>`') !== $object->{'copy-from'} ) {
             // \Log::info("checking copy-from value ".$object->{'copy-from'}."\n");
             $tempobj = $this->determine_copyfrom_origin($object);
             if ($tempobj === null) {

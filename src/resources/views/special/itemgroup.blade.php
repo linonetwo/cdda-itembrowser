@@ -6,6 +6,7 @@
 <ul class="nav nav-tabs">
   @foreach($groups as $group)
     <h1>{{ $group->id }} {!! $group->modinfo !!}</h1>
+    {!! $group->dropfrommap !!}
     {!! $group->dropfrom !!}
     {!! $group->harvestfrom !!}
     <br>

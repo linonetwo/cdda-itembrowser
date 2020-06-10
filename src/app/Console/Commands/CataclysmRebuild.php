@@ -93,6 +93,7 @@ class CataclysmCache extends Command
         $this->registerIndexer(new Indexers\ItemGroup());
         $this->registerIndexer(new Indexers\Special());
         $this->registerIndexer(new Indexers\Mutation());
+        $this->registerIndexer(new Indexers\Mapgen());
     }
 
     private function registerIndexer(Indexers\IndexerInterface $indexer)
